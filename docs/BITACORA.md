@@ -13,7 +13,28 @@ Si el cambio no mejora el kappa OOF, se revierte.
 - Arriba de cada notebook, una celda markdown: "CAMBIO NN respecto de <padre>: ...".
 - Los cambios que no mejoran el kappa OOF se marcan como descartados y no se suben.
 
-## Registro de experimentos
+## Registro de experimentos — medición v2 (VIGENTE desde 2026-11-18)
+
+Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, estratificados por AdoptionSpeed
+(regla de Claude.md). Copia local en `data/folds.csv`; cada notebook verifica que sus folds coinciden.
+0 rescatistas compartidos entre folds. Se reporta kappa por fold, media ± desvío y folds que mejoran.
+
+| # | Notebook | Padre | Kappa por fold | Media ± desvío | Δ vs padre | Folds mejor | ¿Queda? |
+|---|----------|-------|----------------|----------------|------------|-------------|---------|
+| 00 | 00_base | — | 0.299 0.280 0.346 0.336 0.304 | 0.3130 ± 0.0273 | — | — | referencia |
+| 01 | 01_regresion_umbrales | 00 | 0.372 0.368 0.376 0.385 0.377 | 0.3756 ± 0.0065 | +0.0625 | 5/5 | SÍ (ver nota) |
+| 02 | 02_conteo_rescuer | 01 | 0.371 0.390 0.395 0.386 0.400 | 0.3882 ± 0.0111 | +0.0127 | 4/5 | pendiente: usa test (regla) |
+
+Nota v2-01: Δ > 0.02 dispara la regla "frenar y reportar". Causa conocida: el base elige la clase más probable
+(argmax), que casi nunca predice los extremos; regresión + cortes es la mejora estándar para kappa cuadrático.
+Además el desvío baja de 0.027 a 0.007. Se reporta y se acepta.
+Nota v2-02: cumple ≥ 4/5 folds. Pero cuenta rescatistas sobre train + test, y Claude.md dice no usar test
+salvo para la entrega. Decisión pendiente del usuario.
+
+Todos los kappas bajaron respecto de v1 (00: 0.383 → 0.313): en v1 el mismo rescatista estaba en train y valid,
+y el modelo "reconocía" al rescatista por RescuerID. v2 es la medición correcta.
+
+## Registro de experimentos — medición v1 (OBSOLETA: KFold sin agrupar, con fuga por rescatista)
 
 | # | Notebook | Padre | Cambio | Kappa OOF | vs padre | ¿Queda? | ¿Subido a Kaggle? |
 |---|----------|-------|--------|-----------|----------|---------|-------------------|
