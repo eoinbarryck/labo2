@@ -24,6 +24,12 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 | 00 | 00_base | — | 0.299 0.280 0.346 0.336 0.304 | 0.3130 ± 0.0273 | — | — | referencia |
 | 01 | 01_regresion_umbrales | 00 | 0.372 0.368 0.376 0.385 0.377 | 0.3756 ± 0.0065 | +0.0625 | 5/5 | SÍ (ver nota) |
 | 02 | 02_conteo_rescuer | 01 | 0.371 0.390 0.395 0.386 0.400 | 0.3882 ± 0.0111 | +0.0127 | 4/5 | **SÍ** |
+| 03 | 03_metadata_imagenes | 02 | 0.405 0.385 0.421 0.406 0.398 | 0.4028 ± 0.0131 | +0.0145 | 3/5 | NO (descartado) |
+
+Nota v2-03: 10 variables de Google Vision (primera foto + promedio de todas). La media sube +0.0145, pero mejora
+en solo 3/5 folds (Δ por fold: +0.034 −0.005 +0.026 +0.021 −0.003) y el desvío sube (0.0111 → 0.0131).
+Por el criterio del spec (≥ 4/5 folds, no aumentar el desvío) se DESCARTA. El padre sigue siendo 02.
+Tarda ~20 min (leer 72.776 JSON en Windows). Metadata en `input/.../train_metadata` y `test_metadata` (372 MB).
 
 Nota v2-01: Δ > 0.02 dispara la regla "frenar y reportar". Causa conocida: el base elige la clase más probable
 (argmax), que casi nunca predice los extremos; regresión + cortes es la mejora estándar para kappa cuadrático.
