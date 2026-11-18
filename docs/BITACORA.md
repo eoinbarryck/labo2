@@ -19,9 +19,13 @@ Si el cambio no mejora el kappa OOF, se revierte.
 |---|----------|-------|--------|-----------|----------|---------|-------------------|
 | 00 | 00_base.ipynb | — | Base del profesor (sin cambios; + celda de medición) | 0.3834 | — | referencia | no |
 | 01 | 01_regresion_umbrales.ipynb | 00 | LGBMRegressor + 4 cortes optimizados (Nelder-Mead) sobre el OOF | 0.4290 | +0.0456 | **SÍ** | no |
+| 02 | 02_conteo_rescuer.ipynb | 01 | Nueva variable RescuerID_count (mascotas por rescatista, train + test) | 0.4473 | +0.0183 | **SÍ** | no |
 
 Nota 00: los kappas por fold locales son idénticos a los de Kaggle (0.3805, 0.3742, 0.3764, 0.3984, 0.3874),
 así que lo medido en la PC vale para Kaggle. Tiempo: 00 ≈ 10 min, 01 ≈ 1 min.
+Nota 02: RescuerID_count mediana 5, media 43, máximo 459 (hay refugios grandes). Cortes 0.40 / 2.10 / 2.58 / 2.88.
+Ojo: los folds no separan por rescatista; el mismo rescatista aparece en train y valid. Vale igual para 00-02,
+así que la comparación es justa, pero el kappa puede estar algo inflado respecto del test.
 Nota 01: cortes 0.39 / 2.16 / 2.58 / 2.94; en test no predice ninguna clase 0 (es la clase rara, ~3% del train).
 
 Nota 01: se compara el kappa **honesto** (cortes de cada fold elegidos con los otros 4 folds).
