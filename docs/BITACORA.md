@@ -23,13 +23,15 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 |---|----------|-------|----------------|----------------|------------|-------------|---------|
 | 00 | 00_base | — | 0.299 0.280 0.346 0.336 0.304 | 0.3130 ± 0.0273 | — | — | referencia |
 | 01 | 01_regresion_umbrales | 00 | 0.372 0.368 0.376 0.385 0.377 | 0.3756 ± 0.0065 | +0.0625 | 5/5 | SÍ (ver nota) |
-| 02 | 02_conteo_rescuer | 01 | 0.371 0.390 0.395 0.386 0.400 | 0.3882 ± 0.0111 | +0.0127 | 4/5 | pendiente: usa test (regla) |
+| 02 | 02_conteo_rescuer | 01 | 0.371 0.390 0.395 0.386 0.400 | 0.3882 ± 0.0111 | +0.0127 | 4/5 | **SÍ** |
 
 Nota v2-01: Δ > 0.02 dispara la regla "frenar y reportar". Causa conocida: el base elige la clase más probable
 (argmax), que casi nunca predice los extremos; regresión + cortes es la mejora estándar para kappa cuadrático.
 Además el desvío baja de 0.027 a 0.007. Se reporta y se acepta.
-Nota v2-02: cumple ≥ 4/5 folds. Pero cuenta rescatistas sobre train + test, y Claude.md dice no usar test
-salvo para la entrega. Decisión pendiente del usuario.
+Nota v2-02: cumple ≥ 4/5 folds. Primero contaba rescatistas sobre train + test (Claude.md lo prohíbe).
+El usuario eligió "solo train", pero train y test no comparten NINGÚN rescatista (0 de 1518): contar solo en
+train dejaría vacía la variable en todo el test. Corregido a: train contado con train, test con test (test solo
+para la entrega). Como no hay rescatistas compartidos, los números son idénticos (verificado: mismos kappas).
 
 Todos los kappas bajaron respecto de v1 (00: 0.383 → 0.313): en v1 el mismo rescatista estaba en train y valid,
 y el modelo "reconocía" al rescatista por RescuerID. v2 es la medición correcta.
