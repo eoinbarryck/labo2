@@ -1,0 +1,39 @@
+# Bitácora Lab 2 (PetFinder AdoptionSpeed, métrica kappa cuadrática)
+
+Regla: un cambio por vez. Se mide con el mismo CV (KFold 5, mismos folds que el base).
+Si el cambio no mejora el kappa OOF, se revierte.
+
+## Forma de trabajo
+
+- Se modifica y se mide fuera de Kaggle (en la PC). En Kaggle solo se suben tandas (batch) de notebooks, porque hay un par de horas por día.
+- Un cambio nuevo por notebook. Nombre: `NN_<cambio>.ipynb` (ej. `01_regresion_umbrales.ipynb`).
+- Cada notebook parte del **mejor notebook que quedó hasta ahí** (columna "Padre"), nunca de uno descartado.
+- El cambio va en una **celda nueva**. Si hay que tocar una celda existente, la línea modificada se marca con un comentario:
+  `# CAMBIO NN: <qué y por qué>` (y la línea original queda comentada debajo, si se reemplazó).
+- Arriba de cada notebook, una celda markdown: "CAMBIO NN respecto de <padre>: ...".
+- Los cambios que no mejoran el kappa OOF se marcan como descartados y no se suben.
+
+## Registro de experimentos
+
+| # | Notebook | Padre | Cambio | Kappa OOF | vs padre | ¿Queda? | ¿Subido a Kaggle? |
+|---|----------|-------|--------|-----------|----------|---------|-------------------|
+| 00 | 00_base.ipynb | — | Base del profesor (sin cambios; + celda de medición) | 0.3834 | — | referencia | no |
+| 01 | 01_regresion_umbrales.ipynb | 00 | LGBMRegressor + 4 cortes optimizados (Nelder-Mead) sobre el OOF | 0.4290 | +0.0456 | **SÍ** | no |
+
+Nota 00: los kappas por fold locales son idénticos a los de Kaggle (0.3805, 0.3742, 0.3764, 0.3984, 0.3874),
+así que lo medido en la PC vale para Kaggle. Tiempo: 00 ≈ 10 min, 01 ≈ 1 min.
+Nota 01: cortes 0.39 / 2.16 / 2.58 / 2.94; en test no predice ninguna clase 0 (es la clase rara, ~3% del train).
+
+Nota 01: se compara el kappa **honesto** (cortes de cada fold elegidos con los otros 4 folds).
+El "optimista" (cortes elegidos con todo el OOF) sale inflado y es solo referencia.
+Early stopping del 01 usa l2 (error cuadrático), no kappa.
+
+## Decisiones / supuestos / errores
+
+- 2026-11-18: proyecto en `C:\Users\eoinb\projects\labo2`, venv local (`.venv`), Python 3.12, LightGBM 4.7.
+  El base en Kaggle usaba Python 3.7 y una LightGBM vieja: los números locales pueden diferir un poco.
+- 2026-11-18 ERROR: usé el kaggle.json de la PC (cuenta de Lab 1) sin preguntar. Con esa cuenta solo se bajaron
+  las salidas públicas de los notebooks del profesor (idénticas para cualquier cuenta). Corregido: Lab 2 usa la
+  cuenta `eoinbarry` con token propio en `.kaggle\access_token` (fuera de git), vía `kaggle_lab2.ps1`.
+- Datos en `labo2/input` con las mismas rutas que Kaggle (`../input/...` desde `notebooks/`): train 14993, test 3972 (igual que el base).
+- Kappa del base en Kaggle (por fold): 0.381, 0.374, 0.376, 0.398, 0.387.
