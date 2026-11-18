@@ -6,7 +6,7 @@
 # EXP-###: <título corto>
 
 ## Hipótesis
-Creemos que <cambio> mejora QWK porque <razón basada en datos o dominio>.
+Creemos que <contenido de Description podria> mejorar QWK porque <razón basada en datos o dominio>.
 
 ## Cambio exacto
 - Qué se agrega/modifica (archivos, funciones, parámetros).
