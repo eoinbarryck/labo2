@@ -28,6 +28,14 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 04 | 04_meta_score_foto1 | 02 | 0.390 0.389 0.423 0.403 0.407 | 0.4022 ± 0.0139 | +0.0140 | 4/5 | **SÍ** (decisión del usuario) |
 
+| 05 | 05_agregados_rescuer | 04 | 0.412 0.374 0.432 0.390 0.402 | 0.4021 ± 0.0218 | −0.0001 | 2/5 | NO (descartado) |
+
+Nota v2-05: bloque por RescuerID sobre train + test (pedido explícito del usuario): count (ya existía, verificado
+idéntico), media y desvío de Fee, media de Age, media de PhotoAmt. Δ por fold: +0.023 −0.014 +0.009 −0.013 −0.005.
+Media igual, solo 2/5 folds mejoran y el desvío sube 0.014 → 0.022: se DESCARTA. Padre sigue siendo 04.
+Sobre train + test: como no comparten rescatistas (0), da lo mismo que contar cada conjunto por separado;
+igual queda anotado que contradice la regla de Claude.md, por si se retoma.
+
 Nota v2-04: una sola variable (puntaje medio de etiquetas de la foto 1). Δ por fold: +0.019 −0.001 +0.028 +0.017 +0.007.
 Cumple "≥ 4/5 folds" pero el desvío sube (0.0111 → 0.0139), y el spec dice "descartar si aumenta el desvío".
 Las dos reglas chocan. 2026-11-18: el usuario decide QUEDARSE con el 04 (el desvío sube porque un fold
