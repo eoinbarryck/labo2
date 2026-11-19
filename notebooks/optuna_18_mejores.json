@@ -1,0 +1,11 @@
+{
+ "mejores": {
+  "learning_rate": 0.013816071590193177,
+  "num_leaves": 32,
+  "colsample_bytree": 0.4060438453917316,
+  "min_child_samples": 170
+ },
+ "qwk_busqueda": 0.42263928795323413,
+ "qwk_referencia_busqueda": 0.3944824166525105,
+ "n_pruebas": 60
+}

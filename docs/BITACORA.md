@@ -54,6 +54,18 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 17 | 17_metadata_03_sobre_14 | 14 | 0.419 0.404 0.397 0.411 0.417 | 0.4095 ± 0.0090 | −0.0083 | 2/5 | NO (descartado) |
 
+| 18 | 18_optuna_hiperparametros | 14 | 0.408 0.401 0.449 0.415 0.424 | 0.4195 ± 0.0188 | +0.0016 | 2/5 | NO (descartado) |
+
+Nota v2-18: búsqueda en `opt_optuna_18.ipynb` (60 pruebas, 34 min, TPE semilla 42) de learning_rate, num_leaves,
+colsample_bytree, min_child_samples; objetivo QWK fuera de fold honesto, con FOLDS DE BÚSQUEDA PROPIOS (por
+rescatista, semilla 7; 0 iguales a los oficiales), 1 semilla de modelo por fold. Mejor: lr 0.0138, 32 hojas,
+colsample 0.406, min_child 170 (n_estimators 5000 como techo; usa ~300-400 árboles).
+En los folds de búsqueda: 0.3945 (config actual) → 0.4226 (+0.028). En los folds OFICIALES con 5 semillas:
+Δ +0.0016, solo 2/5 folds (−0.006 +0.005 +0.014 −0.004 −0.001), desvío 0.0148 → 0.0188: se DESCARTA.
+Lección: la mejora de la búsqueda era casi toda "a medida" de esos folds y de 1 sola semilla (la referencia de
+la búsqueda ya no promediaba semillas). Separar folds de búsqueda y de medición evitó aceptar una falsa mejora.
+Padre sigue siendo 14.
+
 Nota v2-17: bloque del 03 re-probado sobre el 14. `meta1_label_score_mean` ya existía (CAMBIO 04): verificada
 idéntica y salteada → 9 columnas nuevas. Δ por fold: +0.005 +0.009 −0.039 −0.008 −0.008. Baja la media y solo 2/5
 folds: se DESCARTA. El desvío baja (0.0148 → 0.0090), pero porque el mejor fold (2) cae −0.039, no por estabilidad.
