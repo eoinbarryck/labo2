@@ -44,6 +44,13 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 12 | 12_promedio_semillas | 04 | 0.405 0.395 0.428 0.408 0.408 | 0.4086 ± 0.0119 | +0.0064 | 5/5 | **SÍ** — nuevo padre |
 
+| 13 | 13_imagenes_opencv_sobre_12 | 12 | 0.410 0.392 0.436 0.410 0.417 | 0.4128 ± 0.0158 | +0.0042 | 4/5 | pendiente (decide el usuario) |
+
+Nota v2-13: bloque OpenCV del 09 (12 columnas) re-probado sobre el 12. Δ por fold: +0.006 −0.003 +0.008 +0.002 +0.009.
+Sobre el 04 (en el 09) eran 3/5 folds; sobre el 12 son 4/5 y Δ +0.0042 (≥ el +0.004 del ejemplo del spec).
+Pero el desvío sube 0.0119 → 0.0158: mismo choque de reglas que el 04. Se corrigió además el print de
+iteraciones (ahora muestra las 5 semillas; no cambia resultados).
+
 Nota v2-12: 5 modelos por fold (semillas 0-4), predicciones promediadas. Para que las semillas importen se activó
 azar: subsample=0.8 (subsample_freq=1) y colsample_bytree=0.8 (con los valores por defecto LightGBM es determinista
 y las 5 semillas darían modelos idénticos). Se quitó el primer fit sin eval_set (lo pisaba el segundo; no cambia nada).
