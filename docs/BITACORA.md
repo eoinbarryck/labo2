@@ -26,6 +26,12 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 | 02 | 02_conteo_rescuer | 01 | 0.371 0.390 0.395 0.386 0.400 | 0.3882 ± 0.0111 | +0.0127 | 4/5 | **SÍ** |
 | 03 | 03_metadata_imagenes | 02 | 0.405 0.385 0.421 0.406 0.398 | 0.4028 ± 0.0131 | +0.0145 | 3/5 | NO (descartado) |
 
+| 04 | 04_meta_score_foto1 | 02 | 0.390 0.389 0.423 0.403 0.407 | 0.4022 ± 0.0139 | +0.0140 | 4/5 | pendiente (choque de reglas) |
+
+Nota v2-04: una sola variable (puntaje medio de etiquetas de la foto 1). Δ por fold: +0.019 −0.001 +0.028 +0.017 +0.007.
+Cumple "≥ 4/5 folds" pero el desvío sube (0.0111 → 0.0139), y el spec dice "descartar si aumenta el desvío".
+Las dos reglas chocan; decide el usuario. Tarda ~3 min (solo lee los JSON de la foto 1).
+
 Nota v2-03: 10 variables de Google Vision (primera foto + promedio de todas). La media sube +0.0145, pero mejora
 en solo 3/5 folds (Δ por fold: +0.034 −0.005 +0.026 +0.021 −0.003) y el desvío sube (0.0111 → 0.0131).
 Por el criterio del spec (≥ 4/5 folds, no aumentar el desvío) se DESCARTA. El padre sigue siendo 02.
