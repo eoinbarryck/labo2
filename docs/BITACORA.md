@@ -38,11 +38,12 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 09 | 09_imagenes_opencv | 04 | 0.401 0.387 0.444 0.412 0.399 | 0.4086 ± 0.0215 | +0.0064 | 3/5 | NO (descartado) |
 
-| 10 | 10_nitidez_foto1 | 04 | 0.401 0.390 0.429 0.404 0.396 | 0.4041 ± 0.0151 | +0.0019 | 4/5 | pendiente (decide el usuario) |
+| 10 | 10_nitidez_foto1 | 04 | 0.401 0.390 0.429 0.404 0.396 | 0.4041 ± 0.0151 | +0.0019 | 4/5 | NO (descartado por el usuario) |
 
 Nota v2-10: una sola variable, nitidez de la primera foto (de prep_imagenes_opencv). Δ por fold:
 +0.012 +0.001 +0.007 +0.001 −0.011. Cumple 4/5 folds, pero dos de esas mejoras son de ~0.001 (ruido) y el
 desvío sube 0.0139 → 0.0151. Mismo choque de reglas que el 04, con una mejora mucho menor (+0.002 vs +0.014).
+2026-11-18: el usuario lo DESCARTA (mejora del tamaño del ruido). Padre sigue siendo 04.
 
 Nota v2-09: OpenCV por foto (brillo = media en gris, nitidez = varianza del Laplaciano, aspecto = ancho/alto,
 saturación = media del canal S en HSV), agregado por PetID con media, máximo y primera foto (12 columnas).
