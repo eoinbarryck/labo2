@@ -48,6 +48,14 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 14 | 14_vision_agregados_sobre_13 | 13 | 0.414 0.396 0.436 0.419 0.425 | 0.4178 ± 0.0148 | +0.0050 | 5/5 | **SÍ** — nuevo padre |
 
+| 15 | 15_salud_puntaje | 14 | 0.425 0.384 0.443 0.417 0.422 | 0.4182 ± 0.0216 | +0.0004 | 2/5 | NO (descartado) |
+
+Nota v2-15: Health_Score (0-3) = cantidad de Vaccinated/Dewormed/Sterilized == 1 (Sí) y All_Health_Done
+(Health_Score == 3). Distribución en train: 0 → 40.2%, 1 → 19.9%, 2 → 23.7%, 3 → 16.2%.
+Δ por fold: +0.012 −0.012 +0.007 −0.002 −0.003. Media igual, 2/5 folds, desvío 0.0148 → 0.0216: se DESCARTA.
+Probable causa: el modelo ya ve las tres columnas como categorías; el puntaje es una suma de lo mismo.
+Padre sigue siendo 14.
+
 Nota v2-14: bloque Google Vision del 11 (9 columnas vis_*) re-probado sobre el 13. Δ por fold:
 +0.003 +0.004 +0.000 +0.009 +0.008 (el fold 2 mejora por solo +0.0002). Sobre el 04 (en el 11) era 3/5 y +0.0026;
 sobre el 13 es 5/5, +0.0050 y el desvío BAJA (0.0158 → 0.0148). Pasa todos los criterios. Nuevo padre: 14.
