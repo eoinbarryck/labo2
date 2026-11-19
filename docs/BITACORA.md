@@ -52,6 +52,13 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 16 | 16_fotos_por_mascota | 14 | 0.386 0.384 0.431 0.416 0.423 | 0.4079 ± 0.0217 | −0.0099 | 0/5 | NO (descartado) |
 
+| 17 | 17_metadata_03_sobre_14 | 14 | 0.419 0.404 0.397 0.411 0.417 | 0.4095 ± 0.0090 | −0.0083 | 2/5 | NO (descartado) |
+
+Nota v2-17: bloque del 03 re-probado sobre el 14. `meta1_label_score_mean` ya existía (CAMBIO 04): verificada
+idéntica y salteada → 9 columnas nuevas. Δ por fold: +0.005 +0.009 −0.039 −0.008 −0.008. Baja la media y solo 2/5
+folds: se DESCARTA. El desvío baja (0.0148 → 0.0090), pero porque el mejor fold (2) cae −0.039, no por estabilidad.
+Padre sigue siendo 14. Tardó ~2 min (los JSON ya estaban en la caché del disco).
+
 Nota v2-16: Photos_per_Pet = PhotoAmt / max(Quantity, 1) y No_Photos (PhotoAmt == 0; 2.3% train, 2.9% test).
 Δ por fold: −0.028 −0.012 −0.005 −0.003 −0.002. Empeora en los 5 folds: se DESCARTA. Padre sigue siendo 14.
 No_Photos repite información que ya está: esas mascotas tienen PhotoAmt = 0 y las variables de foto vacías.
