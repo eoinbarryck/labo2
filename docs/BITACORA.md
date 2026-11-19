@@ -36,6 +36,16 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 08 | 08_texto_liviano_vader | 04 | 0.400 0.387 0.431 0.377 0.404 | 0.3999 ± 0.0202 | −0.0023 | 2/5 | NO (descartado) |
 
+| 09 | 09_imagenes_opencv | 04 | 0.401 0.387 0.444 0.412 0.399 | 0.4086 ± 0.0215 | +0.0064 | 3/5 | NO (descartado) |
+
+Nota v2-09: OpenCV por foto (brillo = media en gris, nitidez = varianza del Laplaciano, aspecto = ancho/alto,
+saturación = media del canal S en HSV), agregado por PetID con media, máximo y primera foto (12 columnas).
+Generado por `prep_imagenes_opencv.ipynb` → `input/lab2-prep-imagenes-opencv/{train,test}.parquet` (2 min, 72.776
+fotos, 0 ilegibles). Δ por fold: +0.012 −0.002 +0.021 +0.009 −0.009. La media sube +0.0064 pero solo 3/5 folds
+mejoran y el desvío sube 0.0139 → 0.0215: por el criterio se DESCARTA. Padre sigue siendo 04.
+Fotos en `input/.../train_images` y `test_images` (1.9 GB, fuera de git).
+Los "KeyError joblib_memmapping_folder" del log son avisos de limpieza de joblib en Windows al cerrar; no afectan.
+
 Nota v2-08: Description sin embeddings: largo en caracteres, palabras, proporción de mayúsculas, cantidad de "!",
 VADER compound/pos/neg (paquete vaderSentiment). Δ por fold: +0.011 −0.002 +0.008 −0.025 −0.003.
 Baja la media y sube el desvío: se DESCARTA. Padre sigue siendo 04.
