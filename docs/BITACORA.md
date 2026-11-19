@@ -56,6 +56,14 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 18 | 18_optuna_hiperparametros | 14 | 0.408 0.401 0.449 0.415 0.424 | 0.4195 ± 0.0188 | +0.0016 | 2/5 | NO (descartado) |
 
+| 19 | 19_texto_estructura | 14 | 0.373 0.391 0.395 0.412 0.413 | 0.3967 ± 0.0163 | −0.0211 | 0/5 | NO (descartado) |
+
+Nota v2-19: desc_avg_word_len, desc_n_question, desc_digit_symbol_ratio ((dígitos + símbolos)/largo) y
+desc_n_newlines. Δ por fold: −0.040 −0.005 −0.040 −0.007 −0.012. Empeora en los 5 folds: se DESCARTA. Padre sigue 14.
+OJO: desc_n_newlines vale 0 en TODAS las filas (el CSV no trae saltos de línea en Description): esa variable no
+aporta nada. Solo el 3.6% de las descripciones tiene "?". La caída (−0.021) es más grande que la de otros bloques
+descartados; no se investigó por qué (posible inestabilidad de los cortes en los folds 0 y 2).
+
 Nota v2-18: búsqueda en `opt_optuna_18.ipynb` (60 pruebas, 34 min, TPE semilla 42) de learning_rate, num_leaves,
 colsample_bytree, min_child_samples; objetivo QWK fuera de fold honesto, con FOLDS DE BÚSQUEDA PROPIOS (por
 rescatista, semilla 7; 0 iguales a los oficiales), 1 semilla de modelo por fold. Mejor: lr 0.0138, 32 hojas,
