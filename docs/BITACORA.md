@@ -32,6 +32,13 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 06 | 06_raza_flags_freq | 04 | 0.400 0.371 0.421 0.394 0.407 | 0.3988 ± 0.0185 | −0.0034 | 2/5 | NO (descartado) |
 
+| 07 | 07_economia_camada | 04 | 0.388 0.367 0.422 0.389 0.406 | 0.3944 ± 0.0207 | −0.0078 | 0/5 | NO (descartado) |
+
+Nota v2-07: Fee_per_Pet (Fee/Quantity), Age_in_Years (Age/12), Is_Free (Fee == 0), Age_vs_Breed_Mean (Age − edad
+media de su Breed1, media calculada SOLO con train; 9 filas de test con raza ausente en train quedan vacías).
+Δ por fold: −0.001 −0.022 −0.001 −0.013 −0.001. Empeora en los 5 folds: se DESCARTA. Padre sigue siendo 04.
+Age_in_Years es Age reescalada: para árboles no agrega información (solo duplica la columna).
+
 Nota v2-06: Is_Purebred (Breed2 == 0 y Breed1 != 307), Is_Mixed_Breed (complemento) y Breed1_freq (proporción en
 train + test, pedido explícito). Δ por fold: +0.011 −0.017 −0.001 −0.009 +0.000 (el último mejora por menos de 0.0001).
 Baja la media y sube el desvío: se DESCARTA. Padre sigue siendo 04.
