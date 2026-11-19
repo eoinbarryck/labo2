@@ -1,0 +1,19 @@
+{
+ "id": "eoinbarry/lab2-14-vision-agregados-sobre-13",
+ "title": "lab2-14-vision-agregados-sobre-13",
+ "code_file": "14_vision_agregados_sobre_13.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": false,
+ "enable_internet": false,
+ "dataset_sources": [],
+ "competition_sources": [
+  "petfinder-adoption-prediction"
+ ],
+ "kernel_sources": [
+  "nickel/examen-lab-ii-preprocesado-texto",
+  "nickel/examen-lab-ii-preprocesado-img",
+  "eoinbarry/lab2-prep-imagenes-opencv"
+ ]
+}

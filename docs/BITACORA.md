@@ -13,6 +13,12 @@ Si el cambio no mejora el kappa OOF, se revierte.
 - Arriba de cada notebook, una celda markdown: "CAMBIO NN respecto de <padre>: ...".
 - Los cambios que no mejoran el kappa OOF se marcan como descartados y no se suben.
 
+## Tandas para Kaggle
+
+| Tanda | Fecha | Notebooks | QWK CV local | Estado | QWK Kaggle |
+|-------|-------|-----------|--------------|--------|------------|
+| 01 | 2026-11-19 | prep_imagenes_opencv → 14_vision_agregados_sobre_13 | 0.4178 ± 0.0148 | armada en `kaggle/tanda_01`, NO subida (falta Integrantes y OK del usuario) | — |
+
 ## Registro de experimentos — medición v2 (VIGENTE desde 2026-11-18)
 
 Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, estratificados por AdoptionSpeed

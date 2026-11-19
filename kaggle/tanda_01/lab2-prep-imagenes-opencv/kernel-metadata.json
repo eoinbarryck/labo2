@@ -1,0 +1,15 @@
+{
+ "id": "eoinbarry/lab2-prep-imagenes-opencv",
+ "title": "lab2-prep-imagenes-opencv",
+ "code_file": "prep_imagenes_opencv.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": false,
+ "enable_internet": false,
+ "dataset_sources": [],
+ "competition_sources": [
+  "petfinder-adoption-prediction"
+ ],
+ "kernel_sources": []
+}
