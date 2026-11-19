@@ -42,6 +42,15 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 11 | 11_vision_agregados | 04 | 0.393 0.383 0.433 0.415 0.400 | 0.4048 ± 0.0196 | +0.0026 | 3/5 | NO (descartado) |
 
+| 12 | 12_promedio_semillas | 04 | 0.405 0.395 0.428 0.408 0.408 | 0.4086 ± 0.0119 | +0.0064 | 5/5 | **SÍ** — nuevo padre |
+
+Nota v2-12: 5 modelos por fold (semillas 0-4), predicciones promediadas. Para que las semillas importen se activó
+azar: subsample=0.8 (subsample_freq=1) y colsample_bytree=0.8 (con los valores por defecto LightGBM es determinista
+y las 5 semillas darían modelos idénticos). Se quitó el primer fit sin eval_set (lo pisaba el segundo; no cambia nada).
+Δ por fold: +0.015 +0.006 +0.005 +0.005 +0.001. Mejora en los 5 folds y el desvío BAJA (0.0139 → 0.0119).
+Primer cambio desde el 04 que pasa todos los criterios. Tarda ~1.5 min. Nuevo padre: 12.
+Idea: los bloques descartados que subían la media sin ser parejos (03, 09, 11) podrían re-probarse sobre el 12.
+
 Nota v2-11: Google Vision por mascota (todas las fotos): media y máx de score y pixelFraction de dominantColors
 (sobre todos los colores de todas sus fotos), máx de score de labelAnnotations, media y máx de confidence e
 importanceFraction de cropHints (9 columnas vis_*). Δ por fold: +0.003 −0.006 +0.011 +0.012 −0.007.
