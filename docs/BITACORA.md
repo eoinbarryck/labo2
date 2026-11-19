@@ -30,6 +30,14 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 05 | 05_agregados_rescuer | 04 | 0.412 0.374 0.432 0.390 0.402 | 0.4021 ± 0.0218 | −0.0001 | 2/5 | NO (descartado) |
 
+| 06 | 06_raza_flags_freq | 04 | 0.400 0.371 0.421 0.394 0.407 | 0.3988 ± 0.0185 | −0.0034 | 2/5 | NO (descartado) |
+
+Nota v2-06: Is_Purebred (Breed2 == 0 y Breed1 != 307), Is_Mixed_Breed (complemento) y Breed1_freq (proporción en
+train + test, pedido explícito). Δ por fold: +0.011 −0.017 −0.001 −0.009 +0.000 (el último mejora por menos de 0.0001).
+Baja la media y sube el desvío: se DESCARTA. Padre sigue siendo 04.
+Pura raza: 41.5% train / 44.8% test. 5 filas de train con Breed1 = 0 cuentan como "pura raza" por la definición.
+Breed1_freq usa test (las razas sí se repiten entre train y test): contradice la regla de Claude.md; anotado.
+
 Nota v2-05: bloque por RescuerID sobre train + test (pedido explícito del usuario): count (ya existía, verificado
 idéntico), media y desvío de Fee, media de Age, media de PhotoAmt. Δ por fold: +0.023 −0.014 +0.009 −0.013 −0.005.
 Media igual, solo 2/5 folds mejoran y el desvío sube 0.014 → 0.022: se DESCARTA. Padre sigue siendo 04.
