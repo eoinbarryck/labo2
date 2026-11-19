@@ -40,6 +40,13 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 10 | 10_nitidez_foto1 | 04 | 0.401 0.390 0.429 0.404 0.396 | 0.4041 ± 0.0151 | +0.0019 | 4/5 | NO (descartado por el usuario) |
 
+| 11 | 11_vision_agregados | 04 | 0.393 0.383 0.433 0.415 0.400 | 0.4048 ± 0.0196 | +0.0026 | 3/5 | NO (descartado) |
+
+Nota v2-11: Google Vision por mascota (todas las fotos): media y máx de score y pixelFraction de dominantColors
+(sobre todos los colores de todas sus fotos), máx de score de labelAnnotations, media y máx de confidence e
+importanceFraction de cropHints (9 columnas vis_*). Δ por fold: +0.003 −0.006 +0.011 +0.012 −0.007.
+Solo 3/5 folds y el desvío sube 0.0139 → 0.0196: se DESCARTA. Padre sigue siendo 04. Tarda ~6 min (JSON en paralelo).
+
 Nota v2-10: una sola variable, nitidez de la primera foto (de prep_imagenes_opencv). Δ por fold:
 +0.012 +0.001 +0.007 +0.001 −0.011. Cumple 4/5 folds, pero dos de esas mejoras son de ~0.001 (ruido) y el
 desvío sube 0.0139 → 0.0151. Mismo choque de reglas que el 04, con una mejora mucho menor (+0.002 vs +0.014).
