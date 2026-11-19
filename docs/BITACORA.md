@@ -50,6 +50,12 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 15 | 15_salud_puntaje | 14 | 0.425 0.384 0.443 0.417 0.422 | 0.4182 ± 0.0216 | +0.0004 | 2/5 | NO (descartado) |
 
+| 16 | 16_fotos_por_mascota | 14 | 0.386 0.384 0.431 0.416 0.423 | 0.4079 ± 0.0217 | −0.0099 | 0/5 | NO (descartado) |
+
+Nota v2-16: Photos_per_Pet = PhotoAmt / max(Quantity, 1) y No_Photos (PhotoAmt == 0; 2.3% train, 2.9% test).
+Δ por fold: −0.028 −0.012 −0.005 −0.003 −0.002. Empeora en los 5 folds: se DESCARTA. Padre sigue siendo 14.
+No_Photos repite información que ya está: esas mascotas tienen PhotoAmt = 0 y las variables de foto vacías.
+
 Nota v2-15: Health_Score (0-3) = cantidad de Vaccinated/Dewormed/Sterilized == 1 (Sí) y All_Health_Done
 (Health_Score == 3). Distribución en train: 0 → 40.2%, 1 → 19.9%, 2 → 23.7%, 3 → 16.2%.
 Δ por fold: +0.012 −0.012 +0.007 −0.002 −0.003. Media igual, 2/5 folds, desvío 0.0148 → 0.0216: se DESCARTA.
