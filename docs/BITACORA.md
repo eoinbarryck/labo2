@@ -46,6 +46,13 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 13 | 13_imagenes_opencv_sobre_12 | 12 | 0.410 0.392 0.436 0.410 0.417 | 0.4128 ± 0.0158 | +0.0042 | 4/5 | **SÍ** (decisión del usuario) — nuevo padre |
 
+| 14 | 14_vision_agregados_sobre_13 | 13 | 0.414 0.396 0.436 0.419 0.425 | 0.4178 ± 0.0148 | +0.0050 | 5/5 | **SÍ** — nuevo padre |
+
+Nota v2-14: bloque Google Vision del 11 (9 columnas vis_*) re-probado sobre el 13. Δ por fold:
++0.003 +0.004 +0.000 +0.009 +0.008 (el fold 2 mejora por solo +0.0002). Sobre el 04 (en el 11) era 3/5 y +0.0026;
+sobre el 13 es 5/5, +0.0050 y el desvío BAJA (0.0158 → 0.0148). Pasa todos los criterios. Nuevo padre: 14.
+Confirma la idea del 12: con semillas promediadas, los bloques de varias columnas se aprovechan mejor.
+
 Nota v2-13: bloque OpenCV del 09 (12 columnas) re-probado sobre el 12. Δ por fold: +0.006 −0.003 +0.008 +0.002 +0.009.
 Sobre el 04 (en el 09) eran 3/5 folds; sobre el 12 son 4/5 y Δ +0.0042 (≥ el +0.004 del ejemplo del spec).
 Pero el desvío sube 0.0119 → 0.0158: mismo choque de reglas que el 04. Se corrigió además el print de
