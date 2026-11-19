@@ -34,6 +34,14 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 07 | 07_economia_camada | 04 | 0.388 0.367 0.422 0.389 0.406 | 0.3944 ± 0.0207 | −0.0078 | 0/5 | NO (descartado) |
 
+| 08 | 08_texto_liviano_vader | 04 | 0.400 0.387 0.431 0.377 0.404 | 0.3999 ± 0.0202 | −0.0023 | 2/5 | NO (descartado) |
+
+Nota v2-08: Description sin embeddings: largo en caracteres, palabras, proporción de mayúsculas, cantidad de "!",
+VADER compound/pos/neg (paquete vaderSentiment). Δ por fold: +0.011 −0.002 +0.008 −0.025 −0.003.
+Baja la media y sube el desvío: se DESCARTA. Padre sigue siendo 04.
+El parquet de texto del profesor ya trae 7 emociones (anger, disgust, fear, joy, neutral, sadness, surprise):
+el sentimiento VADER probablemente repite esa información.
+
 Nota v2-07: Fee_per_Pet (Fee/Quantity), Age_in_Years (Age/12), Is_Free (Fee == 0), Age_vs_Breed_Mean (Age − edad
 media de su Breed1, media calculada SOLO con train; 9 filas de test con raza ausente en train quedan vacías).
 Δ por fold: −0.001 −0.022 −0.001 −0.013 −0.001. Empeora en los 5 folds: se DESCARTA. Padre sigue siendo 04.
