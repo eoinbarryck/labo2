@@ -64,6 +64,14 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 19 | 19_texto_estructura | 14 | 0.373 0.391 0.395 0.412 0.413 | 0.3967 ± 0.0163 | −0.0211 | 0/5 | NO (descartado) |
 
+| 20 | 20_clusters_embeddings_img | 14 | 0.420 0.395 0.434 0.420 0.425 | 0.4186 ± 0.0143 | +0.0008 | 2/5 | NO (descartado) |
+
+Nota v2-20: embeddings de imagen img_feat_* (1280 columnas; según el log del profesor son de EfficientNet-B0, NO
+ResNet como pedía el usuario). En cada fold: StandardScaler + MiniBatchKMeans(24, random_state=42) ajustados solo con
+el train del fold; variables img_cluster_dist (distancia al centroide más cercano) e img_cluster (categórica 0-23).
+Mascotas sin foto: vacías. Test de cada fold con los clusters de ese fold. Δ por fold: +0.007 −0.001 −0.002 +0.001
+−0.000. Prácticamente sin efecto y solo 2/5 folds: se DESCARTA. Padre sigue siendo 14. Tarda ~6.5 min.
+
 Nota v2-19: desc_avg_word_len, desc_n_question, desc_digit_symbol_ratio ((dígitos + símbolos)/largo) y
 desc_n_newlines. Δ por fold: −0.040 −0.005 −0.040 −0.007 −0.012. Empeora en los 5 folds: se DESCARTA. Padre sigue 14.
 OJO: desc_n_newlines vale 0 en TODAS las filas (el CSV no trae saltos de línea en Description): esa variable no
