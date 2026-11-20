@@ -68,6 +68,15 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 21 | 21_word2vec_description | 14 | 0.430 0.406 0.446 0.415 0.420 | 0.4233 ± 0.0156 | +0.0054 | 3/5 | NO (descartado, casi) |
 
+| 22 | 22_word2vec_workers1 | 14 | 0.427 0.401 0.441 0.420 0.424 | 0.4225 ± 0.0145 | +0.0047 | 4/5 | **SÍ** — nuevo padre |
+
+Nota v2-22: el 21 reproducible: Word2Vec con workers=1 y hashfxn = zlib.crc32 (el hash de Python cambia en cada
+proceso, así que workers=1 solo no alcanzaba). Corrido DOS veces: kappas por fold idénticos (verificado).
+Δ por fold vs 14: +0.013 +0.005 +0.005 +0.001 −0.001. 4/5 folds, Δ ≥ +0.004 y el desvío baja (0.0148 → 0.0145):
+pasa todos los criterios. Nuevo padre: 22. Tarda ~4 min.
+Comparado con el 21 (workers=4): misma idea, otro azar → 3/5 allá, 4/5 acá. Muestra que con mejoras de este tamaño
+el azar de una corrida decide si un fold sube o baja.
+
 Nota v2-21: Word2Vec(vector_size=100, window=5, min_count=2, workers=4, seed=42) entrenado en cada fold SOLO con las
 Description tokenizadas (gensim simple_preprocess) del train del fold; 100 columnas w2v_* = promedio de vectores de
 palabras conocidas (ceros si ninguna; 29 descripciones de train y 7 de test sin palabras). Vocabulario ~10.2-10.5 mil
