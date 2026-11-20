@@ -70,6 +70,15 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 22 | 22_word2vec_workers1 | 14 | 0.427 0.401 0.441 0.420 0.424 | 0.4225 ± 0.0145 | +0.0047 | 4/5 | **SÍ** — nuevo padre |
 
+| 23 | 23_similitud_semillas | 22 | 0.428 0.403 0.430 0.419 0.421 (corrida 2) | 0.4200 ± 0.0107 | −0.0026 | 2/5 | NO (descartado) |
+
+Nota v2-23: en cada fold, Word2Vec propio (vector_size=100, min_count=2, workers=4, seed=42) + TfidfVectorizer sobre los
+tokens del train del fold; semillas urgent/friendly/playful/vaccinated/rescued/puppy/kitten (las 7 están en el
+vocabulario). Por palabra: similitud coseno máxima contra las semillas; por descripción: promedio ponderado por
+TF-IDF (desc_seed_sim_wmean) y máximo (desc_seed_sim_max); 0.0 si no hay palabras. Corrido 2 veces (workers=4 no
+es reproducible): corrida 1 Δ −0.0030 (0/5 folds), corrida 2 Δ −0.0026 (2/5). Empeora en las dos: se DESCARTA.
+Padre sigue siendo 22. El azar de workers=4 movió folds individuales hasta ~0.01 entre corridas.
+
 Nota v2-22: el 21 reproducible: Word2Vec con workers=1 y hashfxn = zlib.crc32 (el hash de Python cambia en cada
 proceso, así que workers=1 solo no alcanzaba). Corrido DOS veces: kappas por fold idénticos (verificado).
 Δ por fold vs 14: +0.013 +0.005 +0.005 +0.001 −0.001. 4/5 folds, Δ ≥ +0.004 y el desvío baja (0.0148 → 0.0145):
