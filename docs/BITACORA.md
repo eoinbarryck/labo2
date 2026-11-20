@@ -82,6 +82,15 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 28 | 28_vecinos_texto | 22 | 0.430 0.398 0.436 0.415 0.421 | 0.4200 ± 0.0146 | −0.0025 | 1/5 | NO (descartado) |
 
+| 29 | 29_coseno_imagen_texto | 22 | 0.418 0.397 0.436 0.423 0.414 | 0.4177 ± 0.0141 | −0.0049 | 1/5 | NO (descartado) |
+
+Nota v2-29: dos TruncatedSVD(32, random_state=42) por fold (imagen img_feat_* y texto w2v_*), ajustados en el train
+del fold; columna img_txt_cos = coseno fila a fila entre las dos proyecciones. Δ por fold: −0.009 −0.003 −0.005
++0.003 −0.010. Empeora en 4/5: se DESCARTA. Padre sigue siendo 22.
+Confirmado que la medida no tiene sentido sin alinear los espacios: el coseno medio vale ~−0.67 en los folds 0-2 y
+~+0.67 en los folds 3-4 (cada SVD elige el signo de sus componentes al azar). Una versión con sentido necesitaría
+alinear imagen y texto (p. ej. CCA, ajustado en el train del fold).
+
 Nota v2-28: lo mismo que el 27 pero con los 100 vectores de texto w2v_* (Word2Vec del CAMBIO 21/22, por fold):
 StandardScaler del train del fold + normalización; txt_knn_sim_max y txt_knn_sim_top5; train sin sí misma ni su
 rescatista; vectores de ceros (sin palabras conocidas) → vacías. sim_max media pareja en train/valid/test (~0.82-0.84).
