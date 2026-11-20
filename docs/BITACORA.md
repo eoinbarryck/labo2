@@ -80,6 +80,13 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 27 | 27_vecinos_imagen | 22 | 0.428 0.402 0.435 0.363 0.427 | 0.4111 ± 0.0296 | −0.0114 | 3/5 | NO (descartado) |
 
+| 28 | 28_vecinos_texto | 22 | 0.430 0.398 0.436 0.415 0.421 | 0.4200 ± 0.0146 | −0.0025 | 1/5 | NO (descartado) |
+
+Nota v2-28: lo mismo que el 27 pero con los 100 vectores de texto w2v_* (Word2Vec del CAMBIO 21/22, por fold):
+StandardScaler del train del fold + normalización; txt_knn_sim_max y txt_knn_sim_top5; train sin sí misma ni su
+rescatista; vectores de ceros (sin palabras conocidas) → vacías. sim_max media pareja en train/valid/test (~0.82-0.84).
+Δ por fold: +0.003 −0.002 −0.005 −0.005 −0.003. Empeora en 4/5: se DESCARTA. Padre sigue siendo 22.
+
 Nota v2-27: embeddings de imagen escalados (StandardScaler del train del fold) y normalizados a largo 1; para cada
 mascota, coseno contra todo el train del fold: img_knn_sim_max (máximo) e img_knn_sim_top5 (promedio de los 5 más
 altos). Filas de train: sin sí misma ni su rescatista (si no, tendrían siempre un vecino casi idéntico). Con eso,
