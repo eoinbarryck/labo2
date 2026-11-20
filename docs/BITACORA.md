@@ -66,6 +66,16 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 20 | 20_clusters_embeddings_img | 14 | 0.420 0.395 0.434 0.420 0.425 | 0.4186 ± 0.0143 | +0.0008 | 2/5 | NO (descartado) |
 
+| 21 | 21_word2vec_description | 14 | 0.430 0.406 0.446 0.415 0.420 | 0.4233 ± 0.0156 | +0.0054 | 3/5 | NO (descartado, casi) |
+
+Nota v2-21: Word2Vec(vector_size=100, window=5, min_count=2, workers=4, seed=42) entrenado en cada fold SOLO con las
+Description tokenizadas (gensim simple_preprocess) del train del fold; 100 columnas w2v_* = promedio de vectores de
+palabras conocidas (ceros si ninguna; 29 descripciones de train y 7 de test sin palabras). Vocabulario ~10.2-10.5 mil
+palabras por fold. Δ por fold: +0.017 +0.010 +0.010 −0.004 −0.005. La media sube bastante (+0.0054, la mejor desde el 14)
+pero solo 3/5 folds y el desvío sube un poco (0.0148 → 0.0156): por el criterio se DESCARTA. Padre sigue siendo 14.
+Ojo: con workers=4 Word2Vec no es 100% reproducible (cada corrida puede variar un poco). Candidato a re-probar
+(p. ej. con workers=1 para que sea reproducible, o sobre otro padre).
+
 Nota v2-20: embeddings de imagen img_feat_* (1280 columnas; según el log del profesor son de EfficientNet-B0, NO
 ResNet como pedía el usuario). En cada fold: StandardScaler + MiniBatchKMeans(24, random_state=42) ajustados solo con
 el train del fold; variables img_cluster_dist (distancia al centroide más cercano) e img_cluster (categórica 0-23).
