@@ -76,7 +76,7 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 25 | 25_pca_reemplaza_embeddings | 22 | 0.418 0.406 0.443 0.411 0.421 | 0.4196 ± 0.0143 | −0.0029 | 2/5 | NO (descartado) |
 
-| 26 | 26_similitud_centroides_clase | 22 | 0.430 0.405 0.446 0.429 0.413 | 0.4245 ± 0.0158 | +0.0020 | 4/5 | pendiente (decide el usuario) |
+| 26 | 26_similitud_centroides_clase | 22 | 0.430 0.405 0.446 0.429 0.413 | 0.4245 ± 0.0158 | +0.0020 | 4/5 | NO (descartado por el usuario) |
 
 Nota v2-26: en cada fold, centroide de embedding (img_feat_*) por clase 0-4 con las filas de train del fold (usa
 AdoptionSpeed del train del fold; la validación no la ve); 5 columnas img_sim_clase_k = coseno contra cada centroide.
@@ -84,6 +84,7 @@ AdoptionSpeed del train del fold; la validación no la ve); 5 columnas img_sim_c
 referencia y el desvío sube (0.0145 → 0.0158). Mismo caso que el 10 (+0.0019, que el usuario descartó).
 Matiz: las filas de TRAIN se miden contra centroides que las incluyen (cada una pesa ~1/2.500 de su centroide);
 la regla de Claude.md pediría calcularlas con un K-fold interno. Efecto esperado muy chico; no se probó.
+2026-11-20: el usuario lo DESCARTA (coherente con el 10). Padre sigue siendo 22.
 
 Nota v2-25: como el 24 pero las 32 componentes REEMPLAZAN a las 1280 columnas img_feat_* (el modelo pasa de ~1430 a
 182 columnas). Δ por fold: −0.010 +0.006 +0.002 −0.009 −0.004. Baja la media y solo 2/5: se DESCARTA. Padre sigue 22.
