@@ -78,6 +78,15 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 26 | 26_similitud_centroides_clase | 22 | 0.430 0.405 0.446 0.429 0.413 | 0.4245 ± 0.0158 | +0.0020 | 4/5 | NO (descartado por el usuario) |
 
+| 27 | 27_vecinos_imagen | 22 | 0.428 0.402 0.435 0.363 0.427 | 0.4111 ± 0.0296 | −0.0114 | 3/5 | NO (descartado) |
+
+Nota v2-27: embeddings de imagen escalados (StandardScaler del train del fold) y normalizados a largo 1; para cada
+mascota, coseno contra todo el train del fold: img_knn_sim_max (máximo) e img_knn_sim_top5 (promedio de los 5 más
+altos). Filas de train: sin sí misma ni su rescatista (si no, tendrían siempre un vecino casi idéntico). Con eso,
+sim_max media queda pareja en train/valid/test (~0.60-0.61 en todos los folds). Δ por fold: +0.001 +0.002 −0.005
+−0.057 +0.003. Las mejoras son mínimas y el fold 3 se desploma (−0.057): se DESCARTA. Padre sigue siendo 22.
+No se investigó por qué cae tanto el fold 3 (posible inestabilidad de los cortes).
+
 Nota v2-26: en cada fold, centroide de embedding (img_feat_*) por clase 0-4 con las filas de train del fold (usa
 AdoptionSpeed del train del fold; la validación no la ve); 5 columnas img_sim_clase_k = coseno contra cada centroide.
 Δ por fold: +0.003 +0.005 +0.005 +0.009 −0.012. Cumple 4/5 pero la mejora (+0.002) está por debajo del +0.004 de
