@@ -72,6 +72,14 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 23 | 23_similitud_semillas | 22 | 0.428 0.403 0.430 0.419 0.421 (corrida 2) | 0.4200 ± 0.0107 | −0.0026 | 2/5 | NO (descartado) |
 
+| 24 | 24_pca_embeddings_img | 22 | 0.430 0.397 0.438 0.414 0.417 | 0.4192 ± 0.0158 | −0.0033 | 1/5 | NO (descartado) |
+
+Nota v2-24: embeddings img_feat_* (EfficientNet-B0 según el log del profesor; el usuario pidió ResNet, que no tenemos).
+En cada fold: StandardScaler + PCA(32, random_state=42) ajustados solo con el train del fold; 32 columnas img_pca_*
+para train/valid/test del fold (vacías sin foto). Los 32 componentes explican ~60.8% de la varianza en todos los folds.
+Δ por fold: +0.003 −0.004 −0.003 −0.006 −0.008. Empeora en 4/5: se DESCARTA. Padre sigue siendo 22.
+Las 1280 columnas originales ya están en el modelo: el PCA es un resumen de lo mismo (como los clusters del 20).
+
 Nota v2-23: en cada fold, Word2Vec propio (vector_size=100, min_count=2, workers=4, seed=42) + TfidfVectorizer sobre los
 tokens del train del fold; semillas urgent/friendly/playful/vaccinated/rescued/puppy/kitten (las 7 están en el
 vocabulario). Por palabra: similitud coseno máxima contra las semillas; por descripción: promedio ponderado por
