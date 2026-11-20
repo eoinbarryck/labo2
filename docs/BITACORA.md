@@ -74,6 +74,13 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 24 | 24_pca_embeddings_img | 22 | 0.430 0.397 0.438 0.414 0.417 | 0.4192 ± 0.0158 | −0.0033 | 1/5 | NO (descartado) |
 
+| 25 | 25_pca_reemplaza_embeddings | 22 | 0.418 0.406 0.443 0.411 0.421 | 0.4196 ± 0.0143 | −0.0029 | 2/5 | NO (descartado) |
+
+Nota v2-25: como el 24 pero las 32 componentes REEMPLAZAN a las 1280 columnas img_feat_* (el modelo pasa de ~1430 a
+182 columnas). Δ por fold: −0.010 +0.006 +0.002 −0.009 −0.004. Baja la media y solo 2/5: se DESCARTA. Padre sigue 22.
+Dato útil: tarda la mitad (105 s vs ~220 s del 22). Las 1280 columnas originales aportan algo que 32 componentes
+(61% de la varianza) no capturan del todo.
+
 Nota v2-24: embeddings img_feat_* (EfficientNet-B0 según el log del profesor; el usuario pidió ResNet, que no tenemos).
 En cada fold: StandardScaler + PCA(32, random_state=42) ajustados solo con el train del fold; 32 columnas img_pca_*
 para train/valid/test del fold (vacías sin foto). Los 32 componentes explican ~60.8% de la varianza en todos los folds.
