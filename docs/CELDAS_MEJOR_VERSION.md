@@ -14,6 +14,8 @@ Las celdas van **en este orden**. El baseline tiene que tener las celdas del pro
 Cada celda dice si es **NUEVA** o si **REEMPLAZA** una del baseline. Los cambios están marcados `# CAMBIO NN`, con el
 mismo número que en la bitácora.
 
+Las celdas que agregan columnas usan `unir`, definida en la celda 5. Así se pueden correr dos veces sin error.
+
 **No hace falta ningún input extra.** Alcanzan la competencia y los dos preprocesados que el baseline ya usa. El bloque
 de OpenCV (celda 6) calcula las estadísticas de las fotos ahí mismo; tarda unos minutos.
 
@@ -66,6 +68,11 @@ test["RescuerID_count"] = test.groupby("RescuerID", observed=True)["RescuerID"].
 # CAMBIO 04: puntaje medio de las etiquetas de Google Vision en la PRIMERA foto
 import glob, json, os
 
+def unir(df, nuevas):
+    # CAMBIO ARREGLO: quita antes las columnas que ya estén, así la celda se puede correr dos veces sin error
+    nuevas = nuevas.to_frame() if isinstance(nuevas, pd.Series) else nuevas
+    return df.drop(columns=nuevas.columns, errors="ignore").join(nuevas)
+
 def score_primera_foto(carpeta):
     valores = {}
     for ruta in glob.glob(os.path.join(carpeta, "*-1.json")):      # solo "<PetID>-1.json"
@@ -75,8 +82,8 @@ def score_primera_foto(carpeta):
         valores[pet_id] = np.mean(etiquetas) if etiquetas else np.nan
     return pd.Series(valores, name="meta1_label_score_mean")
 
-train = train.join(score_primera_foto("../input/petfinder-adoption-prediction/train_metadata"))
-test = test.join(score_primera_foto("../input/petfinder-adoption-prediction/test_metadata"))
+train = unir(train, score_primera_foto("../input/petfinder-adoption-prediction/train_metadata"))
+test = unir(test, score_primera_foto("../input/petfinder-adoption-prediction/test_metadata"))
 ```
 
 ## Celda 6: NUEVA (tarda unos minutos: lee las ~72 000 fotos)
@@ -111,8 +118,8 @@ def opencv_por_mascota(carpeta):
     primera = fotos[fotos["foto"] == 1].set_index("PetID")[VARIABLES_CV].add_prefix("img_cv_first_")
     return media.join(maximo).join(primera)
 
-train = train.join(opencv_por_mascota("../input/petfinder-adoption-prediction/train_images"))
-test = test.join(opencv_por_mascota("../input/petfinder-adoption-prediction/test_images"))
+train = unir(train, opencv_por_mascota("../input/petfinder-adoption-prediction/train_images"))
+test = unir(test, opencv_por_mascota("../input/petfinder-adoption-prediction/test_images"))
 print("Con fotos: train", train["img_cv_mean_brillo"].notna().mean().round(3),
       "| test", test["img_cv_mean_brillo"].notna().mean().round(3))
 ```
@@ -150,8 +157,8 @@ def vision_por_mascota(carpeta):
                "vis_crop_conf_mean", "vis_crop_conf_max", "vis_crop_importance_mean", "vis_crop_importance_max"]
     return agg[pedidas]
 
-train = train.join(vision_por_mascota("../input/petfinder-adoption-prediction/train_metadata"))
-test = test.join(vision_por_mascota("../input/petfinder-adoption-prediction/test_metadata"))
+train = unir(train, vision_por_mascota("../input/petfinder-adoption-prediction/train_metadata"))
+test = unir(test, vision_por_mascota("../input/petfinder-adoption-prediction/test_metadata"))
 ```
 
 ## Celda 8: NUEVA (tiene que ir ANTES de los `.join` de los preprocesados, porque ahí se borra el texto)
