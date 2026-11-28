@@ -122,7 +122,7 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 48 | 48_labse_768 | 22 | 0.434 0.384 0.439 0.419 0.416 | 0.4187 ± 0.0217 | −0.0039 | 1/5 | NO (descartado) |
 
-| 49 | 49_labse_svd32 | 22 | 0.437 0.402 0.447 0.435 0.424 | 0.4290 ± 0.0171 | +0.0065 | 4/5 | PENDIENTE (choque de reglas: desvío sube) |
+| 49 | 49_labse_svd32 | 22 | 0.437 0.402 0.447 0.435 0.424 | 0.4290 ± 0.0171 | +0.0065 | 4/5 | NO (descartado por el usuario) |
 
 Nota v2-30 a 45 (fila de la noche, 27-28 nov): NINGUNO se acepta; el padre sigue siendo 22 (0.4225 ± 0.0145).
 - 30: traducir al inglés (MarianMT opus-mt-mul-en, solo frases con CJK o malayo: 620 de 14.993 = 4.1% de train)
@@ -151,7 +151,7 @@ Control: la misma frase en inglés / malayo / chino da coseno 0.80–0.88 y 0.18
 - 48 (768 columnas crudas): Δ −0.0039, 1/5, desvío 0.0217. Se DESCARTA.
 - 49 (TruncatedSVD 32 por fold, ajustado en el train del fold): Δ +0.0065, por fold +0.010 +0.001 +0.006 +0.015 −0.000
   (el fold 4 empeora por 0.0003). Cumple ≥ 4/5 y Δ ≥ +0.004, pero el desvío sube 0.0145 → 0.0171: las reglas chocan
-  (como en el 04). Se pregunta al usuario.
+  (como en el 04). 2026-11-28: el usuario decide DESCARTAR el 49. El padre sigue siendo 22.
 
 Nota v2-29: dos TruncatedSVD(32, random_state=42) por fold (imagen img_feat_* y texto w2v_*), ajustados en el train
 del fold; columna img_txt_cos = coseno fila a fila entre las dos proyecciones. Δ por fold: −0.009 −0.003 −0.005
