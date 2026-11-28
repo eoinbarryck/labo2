@@ -138,7 +138,7 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 56 | 56_lgbm_mas_catboost | 22 | 0.382 0.366 0.396 0.362 0.422 | 0.3857 ± 0.0246 | −0.0369 | 0/5 | NO (descartado; salto > 0.02 reportado) |
 
-| 58 | 58_catboost_sin_rescuerid | 22 | 0.433 0.408 0.451 0.429 0.429 | 0.4301 ± 0.0153 | +0.0075 | 5/5 | PENDIENTE (choque de reglas: desvío sube) |
+| 58 | 58_catboost_sin_rescuerid | 22 | 0.433 0.408 0.451 0.429 0.429 | 0.4301 ± 0.0153 | +0.0075 | 5/5 | **SÍ** (aceptado por el usuario) |
 
 Nota v2-30 a 45 (fila de la noche, 27-28 nov): NINGUNO se acepta; el padre sigue siendo 22 (0.4225 ± 0.0145).
 - 30: traducir al inglés (MarianMT opus-mt-mul-en, solo frases con CJK o malayo: 620 de 14.993 = 4.1% de train)
@@ -186,7 +186,7 @@ Nota v2-50 a 56 (ideas pegadas por el usuario, 28 nov): NINGUNO se acepta; el pa
 Nota v2-58: el 56 sin RescuerID en CatBoost (pedido del usuario; LightGBM igual que el 22). Δ +0.0075, mejora 5/5 folds
 (+0.006 +0.008 +0.010 +0.009 +0.004); honesto 0.4301, optimista 0.4331. Confirma que la caída del 56 venía de RescuerID
 en CatBoost (sus estadísticas por rescatista no sirven en valid, donde todos los rescatistas son nuevos).
-Cumple ≥ 4/5 y Δ ≥ +0.004, pero el desvío sube 0.0145 → 0.0153: las reglas chocan. Se pregunta al usuario.
+Cumple ≥ 4/5 y Δ ≥ +0.004, pero el desvío sube 0.0145 → 0.0153: las reglas chocan. 2026-11-28: el usuario ACEPTA el 58. Nuevo padre: 58.
 Tarda ~18 min (CatBoost en CPU, ~350–430 árboles por fold).
 
 Nota v2-29: dos TruncatedSVD(32, random_state=42) por fold (imagen img_feat_* y texto w2v_*), ajustados en el train
