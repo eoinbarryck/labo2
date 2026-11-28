@@ -84,6 +84,50 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 29 | 29_coseno_imagen_texto | 22 | 0.418 0.397 0.436 0.423 0.414 | 0.4177 ± 0.0141 | −0.0049 | 1/5 | NO (descartado) |
 
+| 30 | 30_descripcion_ingles | 22 | 0.435 0.393 0.432 0.416 0.415 | 0.4181 ± 0.0168 | −0.0044 | 1/5 | NO (descartado) |
+
+| 31 | 31_texto_liviano_vader_ingles | 30 | 0.425 0.407 0.442 0.419 0.419 | 0.4224 ± 0.0127 | +0.0043 | 4/5 | NO (descartado) |
+
+| 32 | 32_texto_estructura_ingles | 30 | 0.427 0.396 0.446 0.426 0.425 | 0.4242 ± 0.0178 | +0.0061 | 4/5 | NO (descartado) |
+
+| 33 | 33_similitud_semillas_ingles | 30 | 0.428 0.406 0.450 0.422 0.419 | 0.4251 ± 0.0161 | +0.0069 | 4/5 | NO (descartado) |
+
+| 34 | 34_vecinos_texto_ingles | 30 | 0.421 0.404 0.449 0.417 0.417 | 0.4216 ± 0.0165 | +0.0035 | 4/5 | NO (descartado) |
+
+| 35 | 35_coseno_imagen_texto_ingles | 30 | 0.427 0.395 0.437 0.422 0.423 | 0.4210 ± 0.0154 | +0.0029 | 4/5 | NO (descartado) |
+
+| 36 | 36_nombre_tierno_corto | 22 | 0.428 0.396 0.436 0.420 0.422 | 0.4206 ± 0.0148 | −0.0020 | 2/5 | NO (descartado) |
+
+| 37 | 37_camada_vs_rescatista | 22 | 0.418 0.407 0.448 0.423 0.418 | 0.4229 ± 0.0150 | +0.0003 | 3/5 | NO (descartado) |
+
+| 38 | 38_entropia_colores_foto1 | 22 | 0.428 0.398 0.438 0.425 0.416 | 0.4212 ± 0.0152 | −0.0013 | 2/5 | NO (descartado) |
+
+| 39 | 39_w2v_tierno_vs_urgente | 22 | 0.386 0.401 0.440 0.370 0.414 | 0.4022 ± 0.0268 | −0.0203 | 0/5 | NO (descartado) |
+
+| 40 | 40_deficit_fotos_rescatista | 22 | 0.435 0.398 0.450 0.423 0.418 | 0.4246 ± 0.0193 | +0.0020 | 3/5 | NO (descartado) |
+
+| 41 | 41_letras_alargadas | 22 | 0.428 0.396 0.435 0.414 0.418 | 0.4182 ± 0.0153 | −0.0043 | 1/5 | NO (descartado) |
+
+| 42 | 42_edad_vs_color1 | 22 | 0.428 0.398 0.446 0.418 0.424 | 0.4227 ± 0.0171 | +0.0001 | 2/5 | NO (descartado) |
+
+| 43 | 43_imagen_rapido_vs_clavo | 22 | 0.421 0.397 0.444 0.425 0.413 | 0.4198 ± 0.0170 | −0.0027 | 2/5 | NO (descartado) |
+
+| 44 | 44_indice_grito | 22 | 0.427 0.399 0.436 0.426 0.418 | 0.4212 ± 0.0138 | −0.0013 | 1/5 | NO (descartado) |
+
+| 45 | 45_proyeccion_aleatoria_imagen | 22 | 0.420 0.400 0.437 0.414 0.411 | 0.4162 ± 0.0136 | −0.0064 | 0/5 | NO (descartado) |
+
+Nota v2-30 a 45 (fila de la noche, 27-28 nov): NINGUNO se acepta; el padre sigue siendo 22 (0.4225 ± 0.0145).
+- 30: traducir al inglés (MarianMT opus-mt-mul-en, solo frases con CJK o malayo: 620 de 14.993 = 4.1% de train)
+  baja −0.0044 y mejora 1/5 folds. La traducción es mala en malayo (ej. "anak kucing" → "chickens",
+  "percuma" (gratis) → "cost"): probablemente por eso empeora.
+- 31 a 35 repiten las pruebas de texto 08/19/23/28/29 sobre el 30. Contra el 30 mejoran 4/5, pero el 30 ya
+  estaba descartado; contra el 22 el mejor es 33 (+0.0025, 4/5, desvío sube 0.0145 → 0.0161): no llega a +0.004.
+- 36 a 45: ideas nuevas pedidas por el usuario. El mejor es 40 (+0.0020, 3/5). 
+- 39 (distancia w2v tierno−urgente) baja −0.0203: dispara la regla "salto > 0.02, frenar y reportar". Reportado; no investigado.
+- 42 usa medias de Age por Color1 solo de train (el pedido decía otra cosa; se siguió la regla de Claude.md).
+- Por error corrieron DOS filas a la vez (una vieja que creí frenada + la tarea programada). Los 15 JSON
+  que escribieron las dos (30 a 44) dieron idénticos byte a byte: los resultados son reproducibles.
+
 Nota v2-29: dos TruncatedSVD(32, random_state=42) por fold (imagen img_feat_* y texto w2v_*), ajustados en el train
 del fold; columna img_txt_cos = coseno fila a fila entre las dos proyecciones. Δ por fold: −0.009 −0.003 −0.005
 +0.003 −0.010. Empeora en 4/5: se DESCARTA. Padre sigue siendo 22.
