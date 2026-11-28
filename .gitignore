@@ -5,3 +5,4 @@ input/
 __pycache__/
 .ipynb_checkpoints/
 .kaggle/
+catboost_info/
