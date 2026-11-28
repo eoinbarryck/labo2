@@ -124,6 +124,20 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 49 | 49_labse_svd32 | 22 | 0.437 0.402 0.447 0.435 0.424 | 0.4290 ± 0.0171 | +0.0065 | 4/5 | NO (descartado por el usuario) |
 
+| 50 | 50_edad_vs_rescatista_raza | 22 | 0.426 0.402 0.440 0.426 0.422 | 0.4233 ± 0.0138 | +0.0008 | 2/5 | NO (descartado) |
+
+| 51 | 51_rescatista_gratis | 22 | 0.426 0.399 0.441 0.418 0.415 | 0.4197 ± 0.0157 | −0.0028 | 1/5 | NO (descartado) |
+
+| 52 | 52_parte_animales_rescatista | 22 | 0.410 0.386 0.439 0.421 0.415 | 0.4142 ± 0.0189 | −0.0083 | 1/5 | NO (descartado) |
+
+| 53 | 53_edad_por_tamano | 22 | 0.424 0.407 0.442 0.424 0.414 | 0.4222 ± 0.0131 | −0.0003 | 3/5 | NO (descartado) |
+
+| 54 | 54_cantidad_colores | 22 | 0.426 0.390 0.434 0.364 0.413 | 0.4055 ± 0.0285 | −0.0170 | 0/5 | NO (descartado) |
+
+| 55 | 55_fee_vs_tipo_raza | 22 | 0.425 0.410 0.432 0.424 0.425 | 0.4233 ± 0.0081 | +0.0008 | 3/5 | NO (descartado) |
+
+| 56 | 56_lgbm_mas_catboost | 22 | 0.382 0.366 0.396 0.362 0.422 | 0.3857 ± 0.0246 | −0.0369 | 0/5 | NO (descartado; salto > 0.02 reportado) |
+
 Nota v2-30 a 45 (fila de la noche, 27-28 nov): NINGUNO se acepta; el padre sigue siendo 22 (0.4225 ± 0.0145).
 - 30: traducir al inglés (MarianMT opus-mt-mul-en, solo frases con CJK o malayo: 620 de 14.993 = 4.1% de train)
   baja −0.0044 y mejora 1/5 folds. La traducción es mala en malayo (ej. "anak kucing" → "chickens",
@@ -152,6 +166,20 @@ Control: la misma frase en inglés / malayo / chino da coseno 0.80–0.88 y 0.18
 - 49 (TruncatedSVD 32 por fold, ajustado en el train del fold): Δ +0.0065, por fold +0.010 +0.001 +0.006 +0.015 −0.000
   (el fold 4 empeora por 0.0003). Cumple ≥ 4/5 y Δ ≥ +0.004, pero el desvío sube 0.0145 → 0.0171: las reglas chocan
   (como en el 04). 2026-11-28: el usuario decide DESCARTAR el 49. El padre sigue siendo 22.
+
+Nota v2-50 a 56 (ideas pegadas por el usuario, 28 nov): NINGUNO se acepta; el padre sigue siendo 22.
+- 50/51/52: estadísticas por RescuerID calculadas dentro de cada conjunto (= train+test pedido, sin rescatistas compartidos).
+  En el 50 el fallback nunca se usa (la pareja siempre incluye a la propia mascota).
+- 55: medianas de Fee solo con train (el pedido decía train+test; regla de Claude.md, como el 42). Desvío baja a 0.0081
+  pero Δ +0.0008 y 3/5: no llega.
+- 54 (Num_Colors): el fold 3 cae −0.056. El kappa "optimista" (cortes con todo el OOF) da 0.4232 ≈ 22: la caída viene de
+  los cortes honestos de un fold (Nelder-Mead cae en un mal óptimo), no de la columna. Señal de que los cortes son frágiles.
+- 56 (LightGBM + CatBoost 50/50): −0.0369, dispara "salto > 0.02, frenar y reportar". Honesto y optimista dan igual
+  (0.387), así que es real. CatBoost correlaciona 0.92–0.94 con LightGBM. Causa probable (NO verificada): RescuerID entra
+  como categórica a CatBoost; sus target statistics son informativas en train pero en valid todos los rescatistas son nuevos.
+- Idea 7 (cortes por fold vs globales): ya es la medición del proyecto desde el 01. En el 22: honesto 0.4227, global 0.4268.
+- 2026-11-28 ~03:55 la PC se suspendió y cortó la fila después del 50; se relanzó 51 a 56. El keep-awake del .ps1 nunca
+  funcionó (0x80000001 no entra en uint en PowerShell 5.1); corregido con [uint32].
 
 Nota v2-29: dos TruncatedSVD(32, random_state=42) por fold (imagen img_feat_* y texto w2v_*), ajustados en el train
 del fold; columna img_txt_cos = coseno fila a fila entre las dos proyecciones. Δ por fold: −0.009 −0.003 −0.005
