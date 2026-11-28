@@ -140,7 +140,7 @@ una frase sin relación: el modelo sí une idiomas. Pero el kappa casi no cambia
 
 Nota v2-47: lo mismo que el 46 pero con las 384 columnas crudas, sin SVD (pedido del usuario). Δ +0.0000 (0.4226 vs 0.4225),
 2/5 folds, por fold: +0.006 −0.001 −0.005 +0.011 −0.011; desvío sube a 0.0154. Se DESCARTA. Ni reducido ni completo,
-el embedding multilingüe aporta sobre el 22.
+el embedding multilingüe no aporta sobre el 22.
 
 Nota v2-29: dos TruncatedSVD(32, random_state=42) por fold (imagen img_feat_* y texto w2v_*), ajustados en el train
 del fold; columna img_txt_cos = coseno fila a fila entre las dos proyecciones. Δ por fold: −0.009 −0.003 −0.005
