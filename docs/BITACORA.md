@@ -116,6 +116,8 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 45 | 45_proyeccion_aleatoria_imagen | 22 | 0.420 0.400 0.437 0.414 0.411 | 0.4162 ± 0.0136 | −0.0064 | 0/5 | NO (descartado) |
 
+| 46 | 46_embedding_multilingue | 22 | 0.432 0.400 0.443 0.422 0.420 | 0.4234 ± 0.0161 | +0.0008 | 3/5 | NO (descartado) |
+
 Nota v2-30 a 45 (fila de la noche, 27-28 nov): NINGUNO se acepta; el padre sigue siendo 22 (0.4225 ± 0.0145).
 - 30: traducir al inglés (MarianMT opus-mt-mul-en, solo frases con CJK o malayo: 620 de 14.993 = 4.1% de train)
   baja −0.0044 y mejora 1/5 folds. La traducción es mala en malayo (ej. "anak kucing" → "chickens",
@@ -127,6 +129,12 @@ Nota v2-30 a 45 (fila de la noche, 27-28 nov): NINGUNO se acepta; el padre sigue
 - 42 usa medias de Age por Color1 solo de train (el pedido decía otra cosa; se siguió la regla de Claude.md).
 - Por error corrieron DOS filas a la vez (una vieja que creí frenada + la tarea programada). Los 15 JSON
   que escribieron las dos (30 a 44) dieron idénticos byte a byte: los resultados son reproducibles.
+
+Nota v2-46: embedding de Description en su idioma original con paraphrase-multilingual-MiniLM-L12-v2 (local, 384 dim,
+mean pooling, normalizado; prep_multilingue, 20 min en CPU) + TruncatedSVD(32) por fold ajustado en el train del fold.
+Control del modelo: "cute kitten free for adoption" en inglés / malayo / chino da coseno 0.91–0.94 entre sí y ~0 con
+una frase sin relación: el modelo sí une idiomas. Pero el kappa casi no cambia: Δ +0.0008, 3/5 folds, desvío sube
+0.0145 → 0.0161. Se DESCARTA. El texto parece aportar poco más allá del Word2Vec del 22.
 
 Nota v2-29: dos TruncatedSVD(32, random_state=42) por fold (imagen img_feat_* y texto w2v_*), ajustados en el train
 del fold; columna img_txt_cos = coseno fila a fila entre las dos proyecciones. Δ por fold: −0.009 −0.003 −0.005
