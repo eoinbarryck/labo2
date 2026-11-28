@@ -138,6 +138,8 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 56 | 56_lgbm_mas_catboost | 22 | 0.382 0.366 0.396 0.362 0.422 | 0.3857 ± 0.0246 | −0.0369 | 0/5 | NO (descartado; salto > 0.02 reportado) |
 
+| 58 | 58_catboost_sin_rescuerid | 22 | 0.433 0.408 0.451 0.429 0.429 | 0.4301 ± 0.0153 | +0.0075 | 5/5 | PENDIENTE (choque de reglas: desvío sube) |
+
 Nota v2-30 a 45 (fila de la noche, 27-28 nov): NINGUNO se acepta; el padre sigue siendo 22 (0.4225 ± 0.0145).
 - 30: traducir al inglés (MarianMT opus-mt-mul-en, solo frases con CJK o malayo: 620 de 14.993 = 4.1% de train)
   baja −0.0044 y mejora 1/5 folds. La traducción es mala en malayo (ej. "anak kucing" → "chickens",
@@ -180,6 +182,12 @@ Nota v2-50 a 56 (ideas pegadas por el usuario, 28 nov): NINGUNO se acepta; el pa
 - Idea 7 (cortes por fold vs globales): ya es la medición del proyecto desde el 01. En el 22: honesto 0.4227, global 0.4268.
 - 2026-11-28 ~03:55 la PC se suspendió y cortó la fila después del 50; se relanzó 51 a 56. El keep-awake del .ps1 nunca
   funcionó (0x80000001 no entra en uint en PowerShell 5.1); corregido con [uint32].
+
+Nota v2-58: el 56 sin RescuerID en CatBoost (pedido del usuario; LightGBM igual que el 22). Δ +0.0075, mejora 5/5 folds
+(+0.006 +0.008 +0.010 +0.009 +0.004); honesto 0.4301, optimista 0.4331. Confirma que la caída del 56 venía de RescuerID
+en CatBoost (sus estadísticas por rescatista no sirven en valid, donde todos los rescatistas son nuevos).
+Cumple ≥ 4/5 y Δ ≥ +0.004, pero el desvío sube 0.0145 → 0.0153: las reglas chocan. Se pregunta al usuario.
+Tarda ~18 min (CatBoost en CPU, ~350–430 árboles por fold).
 
 Nota v2-29: dos TruncatedSVD(32, random_state=42) por fold (imagen img_feat_* y texto w2v_*), ajustados en el train
 del fold; columna img_txt_cos = coseno fila a fila entre las dos proyecciones. Δ por fold: −0.009 −0.003 −0.005
