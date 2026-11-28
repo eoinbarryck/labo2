@@ -1,6 +1,7 @@
-# Celdas de la mejor versión (22) para pegar en el baseline
+# Celdas de la mejor versión (58) para pegar en el baseline
 
-Versión 22_word2vec_workers1: **QWK 0.4225 ± 0.0145** en validación por rescatista.
+Versión 58_catboost_sin_rescuerid: **QWK 0.4301 ± 0.0153** en validación por rescatista
+(la anterior, 22, daba 0.4225 ± 0.0145). El 58 es el 22 + un CatBoost promediado con LightGBM (celda 11).
 El base del profesor da 0.3130 con la misma validación.
 
 Las celdas van **en este orden**. El baseline tiene que tener las celdas del profesor:
@@ -18,6 +19,7 @@ Las celdas que agregan columnas usan `unir`, definida en la celda 5. Así se pue
 
 **No hace falta ningún input extra.** Alcanzan la competencia y los dos preprocesados que el baseline ya usa. El bloque
 de OpenCV (celda 6) calcula las estadísticas de las fotos ahí mismo; tarda unos minutos.
+CatBoost ya viene instalado en Kaggle. El entrenamiento (celda 11) tarda más que en el 22: unos 15–20 minutos más.
 
 ---
 
@@ -37,6 +39,7 @@ from scipy.optimize import minimize                         # CAMBIO 01: para op
 def metric(y_true, y_pred):
     res = cohen_kappa_score(y_true, y_pred.reshape((y_true.shape[0], 5), order="F").argmax(axis=1), weights= 'quadratic')
     return "kappa", res, True
+from catboost import CatBoostRegressor, Pool   # CAMBIO 58
 ```
 
 ## Celda 2: REEMPLAZA la celda que lee train/test y arma los folds
@@ -228,8 +231,22 @@ for i, fold in enumerate(folds):
                     callbacks=[early_stopping(5, verbose=False)])
         pred_valid.append(learner.predict(X_valid))
         pred_test.append(learner.predict(X_test[X_train.columns]))
-    fold_preds.append(pd.Series(np.mean(pred_valid, axis=0), index=fold, name="AdoptionSpeed"))
-    test_preds.append(pd.Series(np.mean(pred_test, axis=0), index=test.index))
+
+    # CAMBIO 58: además, un CatBoost con las mismas columnas MENOS RescuerID (en valid todos los rescatistas son nuevos,
+    # y con RescuerID el kappa cae −0.037); se promedia 50/50 con el promedio de LightGBM
+    cats = [col for col in X_train.columns if str(X_train[col].dtype) == "category" and col != "RescuerID"]
+    a_cb = lambda X: X.drop(columns=["RescuerID"], errors="ignore").assign(**{col: X[col].astype(str) for col in cats})
+    cb = CatBoostRegressor(loss_function="RMSE", iterations=3000, learning_rate=0.05, random_seed=42,
+                           od_type="Iter", od_wait=100, verbose=0, thread_count=-1)
+    cb.fit(Pool(a_cb(X_train), y_train, cat_features=cats), eval_set=Pool(a_cb(X_valid), y_valid, cat_features=cats),
+           use_best_model=True)
+    fold_preds.append(pd.Series(0.5 * np.mean(pred_valid, axis=0) + 0.5 * cb.predict(a_cb(X_valid)),
+                                index=fold, name="AdoptionSpeed"))
+    test_preds.append(pd.Series(0.5 * np.mean(pred_test, axis=0) + 0.5 * cb.predict(a_cb(X_test[X_train.columns])),
+                                index=test.index))
+    print(f"fold {i}: listo (CatBoost {cb.get_best_iteration()} árboles)")
+    # fold_preds.append(pd.Series(np.mean(pred_valid, axis=0), index=fold, name="AdoptionSpeed"))   # 22
+    # test_preds.append(pd.Series(np.mean(pred_test, axis=0), index=test.index))                   # 22
 
 fold_preds = pd.concat(fold_preds)
 # CAMBIO 01: promedio de los 5 folds; los umbrales se aplican en la celda siguiente
