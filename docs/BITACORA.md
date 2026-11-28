@@ -140,6 +140,8 @@ Folds `StratifiedGroupKFold(5, shuffle=True, random_state=42)` por `RescuerID`, 
 
 | 58 | 58_catboost_sin_rescuerid | 22 | 0.433 0.408 0.451 0.429 0.429 | 0.4301 ± 0.0153 | +0.0075 | 5/5 | **SÍ** (aceptado por el usuario) |
 
+| 59 | 59_target_encoding_raza_estado | 58 | 0.435 0.410 0.441 0.432 0.413 | 0.4261 ± 0.0140 | −0.0039 | 3/5 | NO (descartado) |
+
 Nota v2-30 a 45 (fila de la noche, 27-28 nov): NINGUNO se acepta; el padre sigue siendo 22 (0.4225 ± 0.0145).
 - 30: traducir al inglés (MarianMT opus-mt-mul-en, solo frases con CJK o malayo: 620 de 14.993 = 4.1% de train)
   baja −0.0044 y mejora 1/5 folds. La traducción es mala en malayo (ej. "anak kucing" → "chickens",
@@ -188,6 +190,13 @@ Nota v2-58: el 56 sin RescuerID en CatBoost (pedido del usuario; LightGBM igual 
 en CatBoost (sus estadísticas por rescatista no sirven en valid, donde todos los rescatistas son nuevos).
 Cumple ≥ 4/5 y Δ ≥ +0.004, pero el desvío sube 0.0145 → 0.0153: las reglas chocan. 2026-11-28: el usuario ACEPTA el 58. Nuevo padre: 58.
 Tarda ~18 min (CatBoost en CPU, ~350–430 árboles por fold).
+
+Nota v2-59: target encoding suavizado (m = 20) de (Breed1, State): media y desvío de AdoptionSpeed; OOF dentro del train
+del fold con 5 sub-folds GroupKFold por RescuerID, valid/test con todo el train del fold. Δ vs 58 −0.0039, 3/5 folds
+(+0.002 +0.001 −0.010 +0.003 −0.016). Se DESCARTA; el padre sigue siendo 58. La columna sí tiene señal (corr con y
+0.13–0.22 en valid) pero el modelo ya la tenía con Breed1 y State. Optimista 0.4332 ≈ 58 (0.4331).
+No se probó target encoding de RescuerID: con folds por rescatista y sin rescatistas compartidos train/test,
+en valid y test sería siempre el valor global.
 
 Nota v2-29: dos TruncatedSVD(32, random_state=42) por fold (imagen img_feat_* y texto w2v_*), ajustados en el train
 del fold; columna img_txt_cos = coseno fila a fila entre las dos proyecciones. Δ por fold: −0.009 −0.003 −0.005
